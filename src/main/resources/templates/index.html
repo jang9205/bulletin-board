@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header(~{::title},~{::section})}">
+    <title>푸하핫</title>
+</head>
+
+<body>
+<div class="container">
+    <div class="row" style="margin-top: 80px;">
+        <h2>게시판</h2>
+    </div>
+</div>
+
+<!-- Footer Section Begin -->
+<div class="row" style="margin-bottom: 80px;"></div>
+<footer th:replace="~{fragments/footer::footer}"></footer>
+</body>
+
+<script th:src="@{/bootstrap.min.js}"></script>
+
+</html>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="study.bulletin_board.repository.member.MemberMapper">
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        insert into member (nickname, email, created_date, grade)
+        values (#{nickname}, #{email}, #{createdDate}, #{grade})
+    </insert>
+
+    <select id="findByEmail" resultType="study.bulletin_board.domain.Member">
+        select member_id as id, nickname, email, created_date as createdDate, grade
+        from member
+        where email = #{email}
+    </select>
+
+</mapper>

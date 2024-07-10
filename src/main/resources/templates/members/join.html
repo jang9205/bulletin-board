@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header(~{::title},~{::section})}">
+    <title>Join | 푸하핫</title>
+</head>
+
+<body>
+<div class="container">
+
+    <div class="row" style="margin-top: 60px;">
+        <div class="col-12 text-center">
+            <h2 style="margin-bottom: 30px;">회원가입</h2>
+        </div>
+        <div class="col-lg-4 col-md-4 d-flex justify-content-center" style="margin: 0 auto;">
+            <!-- 네이버 로그인 버튼 -->
+            <a th:href="@{/oauth2/authorization/naver}">
+                <button class="btn naver-btn">
+                    <img src="img/naver_logo.png" style="width: 10%;">
+                    <span class="naver-text">네이버로 간편 가입</span>
+                </button>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Footer Section Begin -->
+<div class="row" style="margin-bottom: 80px;"></div>
+<footer th:replace="~{fragments/footer::footer}"></footer>
+</body>
+
+
+<style>
+    .naver-btn {
+        background-color: #03C75A; /* Naver green color */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 4px;
+    }
+
+    .naver-btn:hover {
+        background-color: #03C75A; /* Slightly darker green for hover effect */
+    }
+</style>
+
+</html>
