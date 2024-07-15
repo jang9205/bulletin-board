@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="study.bulletin_board.repository.post.PostMapper">
+    
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        insert into post (member_id, category_id, title, content, post_date, picture)
+        values (#{member.id}, #{category.id}, #{title}, #{content}, #{postDate}, #{picturePath})
+    </insert>
+    
+    <update id="update">
+        update post
+        set category_id = #{post.category.id}, title = #{post.title}, content = #{post.content}, picture = #{post.picturePath}
+        where post_id = #{postId}
+    </update>
+    
+    <delete id="delete">
+        delete from post
+        where post_id = #{postId}
+    </delete>
+    
+    <select id="findById" resultMap="postResultMap">
+        select p.post_id as postId, p.title as title, p.content as content, p.post_date as postDate, p.picture as picturePath,
+        p.member_id as memberId, m.nickname as nickname,
+        p.category_id as categoryId, c.category as category
+        from post p
+        join member m on p.member_id = m.member_id
+        join category c on p.category_id = c.category_id
+        where p.post_id = #{id}
+    </select>
+
+    <select id="findAll" resultMap="postResultMap">
+        select p.post_id as postId, p.title as title, p.content as content, p.post_date as postDate, p.picture as picturePath,
+        p.member_id as memberId, m.nickname as nickname,
+        p.category_id as categoryId, c.category as category
+        from post p
+        join member m on p.member_id = m.member_id
+        join category c on p.category_id = c.category_id
+        <where>
+            <if test="memberName != null and memberName != ''">
+                and m.nickname like concat('%', #{memberName}, '%')
+            </if>
+            <if test="postTitle != null and postTitle != ''">
+                and p.title like concat('%', #{postTitle}, '%')
+            </if>
+        </where>
+    </select>
+
+    <resultMap id="postResultMap" type="study.bulletin_board.domain.Post">
+        <id property="id" column="postId"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="postDate" column="postDate"/>
+        <result property="picturePath" column="picturePath"/>
+        <association property="member" column="memberId" javaType="study.bulletin_board.domain.Member" resultMap="memberResultMap"/>
+        <association property="category" column="categoryId" javaType="study.bulletin_board.domain.Category" resultMap="categoryResultMap"/>
+    </resultMap>
+    
+    <resultMap id="memberResultMap" type="study.bulletin_board.domain.Member">
+        <id property="id" column="memberId"/>
+        <result property="nickname" column="nickname"/>
+    </resultMap>
+
+    <resultMap id="categoryResultMap" type="study.bulletin_board.domain.Category">
+        <id property="id" column="categoryId"/>
+        <result property="category" column="category"/>
+    </resultMap>
+</mapper>

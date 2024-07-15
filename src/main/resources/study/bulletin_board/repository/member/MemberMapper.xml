@@ -14,4 +14,9 @@
         where email = #{email}
     </select>
 
+    <select id="findById" resultType="study.bulletin_board.domain.Member">
+        select member_id as id, nickname, email, created_date as createdDate, grade
+        from member
+        where member_id = #{id}
+    </select>
 </mapper>

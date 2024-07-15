@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header(~{::title},~{::section})}">
+    <title>푸하핫</title>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="row" style="margin-top: 80px;">
+        <h2>글쓰기</h2>
+    </div>
+    <form th:action="@{/write/new}" th:object="${postDto}" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="title" style="margin-top: 30px;">제목</label>
+            <input type="text" class="form-control" id="title" th:field="*{title}" placeholder="제목">
+            <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="alert alert-danger"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="content" style="margin-top: 30px;">본문</label>
+            <textarea class="form-control" id="content" rows="5" th:field="*{content}"></textarea>
+            <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="alert alert-danger"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="category" style="margin-top: 40px;">카테고리</label>
+            <select class="form-control" id="category" th:field="*{category}">
+                <option value="" disabled selected>카테고리를 선택해 주세요</option>
+                <option th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
+            </select>
+            <div th:if="${#fields.hasErrors('category')}" th:errors="*{category}" class="alert alert-danger"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="picture" style="margin-top: 40px;">사진</label>
+            <input type="file" class="form-control-file" id="picture" th:field="*{picture}">
+        </div>
+
+        <button type="submit" class="btn btn-secondary" style="margin-top: 40px;">등록</button>
+    </form>
+
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+</div>
+
+
+<!-- Footer Section Begin -->
+<div class="row" style="margin-bottom: 80px;"></div>
+<footer th:replace="~{fragments/footer::footer}"></footer>
+</body>
+
+<script src="/js/bootstrap.min.js"></script>
+
+</html>

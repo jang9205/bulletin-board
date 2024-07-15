@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header(~{::title},~{::section})}">
+    <title>푸하핫</title>
+</head>
+
+<body>
+
+<div class="container" style="margin-top: 80px;">
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
+            <h2 th:text="${post.title}">제목</h2>
+            <hr style="border: 0.5px solid lightgray;">
+
+            <div class="d-flex justify-content-between mb-4">
+                <div>
+                    <span class="text-muted">카테고리:</span>
+                    <span th:text="${post.category.category}">카테고리</span>
+                </div>
+                <div>
+                    <span class="text-muted">작성자:</span>
+                    <span th:text="${post.member.nickname}">작성자</span>
+                </div>
+                <div>
+                    <span class="text-muted">작성일:</span>
+                    <span th:text="${post.postDate}">작성일</span>
+                </div>
+            </div>
+            <hr style="border: 0.5px solid lightgray;">
+
+            <div class="mb-4" th:if="${post.picturePath != null}">
+                <img th:src="${post.picturePath}" alt="첨부 이미지" class="img-fluid">
+            </div>
+            <div class="mb-4">
+                <p th:text="${post.content}">내용</p>
+            </div>
+
+            <div class="row">
+                <div th:if="${post.member.id == loggedInMemberId}" style="margin-top: 50px;">
+                    <a th:href="@{'/posts/update/' + ${post.id}}" class="btn btn-secondary">수정</a>
+                    <form th:action="@{'/posts/delete/' + ${post.id}}" method="post" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">삭제</button>
+                    </form>
+                </div>
+            </div>
+
+            <div style="margin-top: 50px;">
+                <a th:href="@{/}" class="btn btn-secondary">목록으로 돌아가기</a>
+            </div>
+        </div>
+        <div class="col-lg-1"></div>
+    </div>
+</div>
+
+<!-- Footer Section Begin -->
+<div class="row" style="margin-bottom: 80px;"></div>
+<footer th:replace="~{fragments/footer::footer}"></footer>
+</body>
+
+<!-- JavaScript 코드로 메시지 표시 -->
+<script th:inline="javascript">
+    var successMessage = [[${successMessage}]];
+    if (successMessage) {
+        alert(successMessage); // 메시지 박스로 메시지 표시
+    }
+</script>
+
+<script src="/js/bootstrap.min.js"></script>
+
+</html>

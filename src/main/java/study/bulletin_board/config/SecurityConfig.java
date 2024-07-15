@@ -20,7 +20,7 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers("/profile").authenticated()
+                        .requestMatchers("/profile", "/write/new", "/posts/update/**").authenticated()
                         .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
                 .oauth2Login(oauth2Login -> oauth2Login
                         .loginPage("/login")
