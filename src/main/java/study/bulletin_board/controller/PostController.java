@@ -16,6 +16,7 @@ import study.bulletin_board.dto.PostDto;
 import study.bulletin_board.dto.PostSearchCond;
 import study.bulletin_board.repository.member.MemberRepository;
 import study.bulletin_board.service.category.CategoryService;
+import study.bulletin_board.service.comment.CommentService;
 import study.bulletin_board.service.post.PostService;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class PostController {
     private final PostService postService;
     private final CategoryService categoryService;
     private final MemberRepository memberRepository;
+    private final CommentService commentService;
 
     @GetMapping("/")
     public String index(@RequestParam(value = "searchType", required = false) String searchType,
@@ -192,6 +194,7 @@ public class PostController {
                     Post findPost = postService.findPostById(postId).orElseThrow(() -> new IllegalArgumentException("Invalid post ID: " + postId));
 
                     if (findPost.getMember().getId().equals(member.getId())) {
+                        commentService.deleteCommentByPostId(postId);
                         postService.deletePost(postId);
                         redirectAttributes.addFlashAttribute("successMessage", "게시물이 삭제되었습니다.");
                     } else {

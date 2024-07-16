@@ -24,7 +24,7 @@
                 </div>
                 <div>
                     <span class="text-muted">작성일:</span>
-                    <span th:text="${post.postDate}">작성일</span>
+                    <span th:text="${#temporals.format(post.postDate, 'yyyy-MM-dd HH:mm:ss')}">작성일</span>
                 </div>
             </div>
             <hr style="border: 0.5px solid lightgray;">
@@ -48,6 +48,38 @@
             <div style="margin-top: 50px;">
                 <a th:href="@{/}" class="btn btn-secondary">목록으로 돌아가기</a>
             </div>
+
+            <hr style="border: 0.5px solid lightgray; margin-top: 50px;">
+
+            <!-- 댓글 작성 폼 -->
+            <div th:if="${loggedInMemberId != null}" class="comment-form" style="margin-top: 50px;">
+                <h4>댓글 작성</h4>
+                <form th:action="@{/comment/save/{postId}(postId=${post.id})}" method="post">
+                    <div class="form-group">
+                        <textarea class="form-control" name="content" rows="3" placeholder="댓글을 작성하세요" required></textarea>
+                    </div>
+                    <input type="hidden" name="postId" th:value="${post.id}">
+                    <button type="submit" class="btn btn-secondary" style="margin-top: 20px;">댓글 작성</button>
+                </form>
+            </div>
+
+            <!-- 댓글 목록 -->
+            <div class="comments-section" style="margin-top: 50px;">
+                <h4>댓글</h4>
+                <div th:each="comment : ${post.comments}">
+                    <div class="comment" style="margin-bottom: 20px;">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <strong th:text="${comment.member.nickname}">작성자</strong>
+                                <span class="text-muted"
+                                      th:text="${#temporals.format(comment.commentDate, 'yyyy-MM-dd HH:mm:ss')}">작성일</span>
+                            </div>
+                        </div>
+                        <p th:text="${comment.content}">댓글 내용</p>
+                    </div>
+                    <hr>
+                </div>
+            </div>
         </div>
         <div class="col-lg-1"></div>
     </div>
@@ -63,6 +95,14 @@
     var successMessage = [[${successMessage}]];
     if (successMessage) {
         alert(successMessage); // 메시지 박스로 메시지 표시
+    }
+</script>
+
+<!-- JavaScript 코드로 메시지 표시 -->
+<script th:inline="javascript">
+    var error = [[${error}]];
+    if (error) {
+        alert(error); // 메시지 박스로 메시지 표시
     }
 </script>
 

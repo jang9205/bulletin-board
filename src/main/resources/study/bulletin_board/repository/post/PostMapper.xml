@@ -18,24 +18,30 @@
         delete from post
         where post_id = #{postId}
     </delete>
-    
+
     <select id="findById" resultMap="postResultMap">
         select p.post_id as postId, p.title as title, p.content as content, p.post_date as postDate, p.picture as picturePath,
-        p.member_id as memberId, m.nickname as nickname,
-        p.category_id as categoryId, c.category as category
+        p.member_id as postMemberId, m.nickname as postNickname,
+        p.category_id as categoryId, c.category as category,
+        cm.comment_id as commentId, cm.content as commentContent, cm.comment_date as commentDate, cm.member_id as commentMemberId,
+        cm_member.nickname as commentNickname
         from post p
         join member m on p.member_id = m.member_id
         join category c on p.category_id = c.category_id
+        left join comment cm on p.post_id = cm.post_id
+        left join member cm_member on cm.member_id = cm_member.member_id
         where p.post_id = #{id}
     </select>
 
     <select id="findAll" resultMap="postResultMap">
         select p.post_id as postId, p.title as title, p.content as content, p.post_date as postDate, p.picture as picturePath,
-        p.member_id as memberId, m.nickname as nickname,
-        p.category_id as categoryId, c.category as category
+        p.member_id as postMemberId, m.nickname as postNickname,
+        p.category_id as categoryId, c.category as category,
+        cm.comment_id as commentId, cm.member_id as commentMemberId
         from post p
         join member m on p.member_id = m.member_id
         join category c on p.category_id = c.category_id
+        left join comment cm on p.post_id = cm.post_id
         <where>
             <if test="memberName != null and memberName != ''">
                 and m.nickname like concat('%', #{memberName}, '%')
@@ -44,6 +50,7 @@
                 and p.title like concat('%', #{postTitle}, '%')
             </if>
         </where>
+        order by p.post_id desc
     </select>
 
     <resultMap id="postResultMap" type="study.bulletin_board.domain.Post">
@@ -52,17 +59,29 @@
         <result property="content" column="content"/>
         <result property="postDate" column="postDate"/>
         <result property="picturePath" column="picturePath"/>
-        <association property="member" column="memberId" javaType="study.bulletin_board.domain.Member" resultMap="memberResultMap"/>
-        <association property="category" column="categoryId" javaType="study.bulletin_board.domain.Category" resultMap="categoryResultMap"/>
+        <association property="member" column="memberId" javaType="study.bulletin_board.domain.Member" resultMap="postMemberResultMap"/>        <association property="category" column="categoryId" javaType="study.bulletin_board.domain.Category" resultMap="categoryResultMap"/>
+        <collection property="comments" column="postId" javaType="ArrayList" ofType="study.bulletin_board.domain.Comment" resultMap="commentResultMap"/>
     </resultMap>
-    
-    <resultMap id="memberResultMap" type="study.bulletin_board.domain.Member">
-        <id property="id" column="memberId"/>
-        <result property="nickname" column="nickname"/>
+
+    <resultMap id="postMemberResultMap" type="study.bulletin_board.domain.Member">
+        <id property="id" column="postMemberId"/>
+        <result property="nickname" column="postNickname"/>
+    </resultMap>
+
+    <resultMap id="commentMemberResultMap" type="study.bulletin_board.domain.Member">
+        <id property="id" column="commentMemberId"/>
+        <result property="nickname" column="commentNickname"/>
     </resultMap>
 
     <resultMap id="categoryResultMap" type="study.bulletin_board.domain.Category">
         <id property="id" column="categoryId"/>
         <result property="category" column="category"/>
+    </resultMap>
+
+    <resultMap id="commentResultMap" type="study.bulletin_board.domain.Comment">
+        <id property="id" column="commentId"/>
+        <result property="content" column="commentContent"/>
+        <result property="commentDate" column="commentDate"/>
+        <association property="member" column="memberId" javaType="study.bulletin_board.domain.Member" resultMap="commentMemberResultMap"/>
     </resultMap>
 </mapper>

@@ -9,6 +9,7 @@ import study.bulletin_board.dto.PostDto;
 import study.bulletin_board.util.TimeAgoUtil;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter @Setter
 @NoArgsConstructor
@@ -23,6 +24,7 @@ public class Post {
     private LocalDateTime postDate;
     private String picturePath;
     private MultipartFile picture;
+    private List<Comment> comments;
 
     //생성 메서드
     public static Post createPost(Member member, PostDto postDto, Category category) {
