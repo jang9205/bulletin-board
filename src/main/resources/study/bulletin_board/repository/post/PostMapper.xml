@@ -24,7 +24,8 @@
         p.member_id as postMemberId, m.nickname as postNickname,
         p.category_id as categoryId, c.category as category,
         cm.comment_id as commentId, cm.content as commentContent, cm.comment_date as commentDate, cm.member_id as commentMemberId,
-        cm_member.nickname as commentNickname
+        cm_member.nickname as commentNickname,
+        (select count(*) from post_like where post_id = p.post_id) as likeCount
         from post p
         join member m on p.member_id = m.member_id
         join category c on p.category_id = c.category_id
@@ -37,7 +38,8 @@
         select p.post_id as postId, p.title as title, p.content as content, p.post_date as postDate, p.picture as picturePath,
         p.member_id as postMemberId, m.nickname as postNickname,
         p.category_id as categoryId, c.category as category,
-        cm.comment_id as commentId, cm.member_id as commentMemberId
+        cm.comment_id as commentId, cm.member_id as commentMemberId,
+        (select count(*) from post_like where post_id = p.post_id) as likeCount
         from post p
         join member m on p.member_id = m.member_id
         join category c on p.category_id = c.category_id
@@ -59,7 +61,9 @@
         <result property="content" column="content"/>
         <result property="postDate" column="postDate"/>
         <result property="picturePath" column="picturePath"/>
-        <association property="member" column="memberId" javaType="study.bulletin_board.domain.Member" resultMap="postMemberResultMap"/>        <association property="category" column="categoryId" javaType="study.bulletin_board.domain.Category" resultMap="categoryResultMap"/>
+        <result property="likeCount" column="likeCount" javaType="int"/>
+        <association property="member" column="memberId" javaType="study.bulletin_board.domain.Member" resultMap="postMemberResultMap"/>
+        <association property="category" column="categoryId" javaType="study.bulletin_board.domain.Category" resultMap="categoryResultMap"/>
         <collection property="comments" column="postId" javaType="ArrayList" ofType="study.bulletin_board.domain.Comment" resultMap="commentResultMap"/>
     </resultMap>
 

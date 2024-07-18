@@ -48,7 +48,6 @@ public class PostServiceImpl implements PostService {
                 String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
 
                 String fullPath = fileDir + fileName;
-                log.info(fullPath);
                 picture.transferTo(new File(fullPath));
 
                 postDto.setPicturePath("/img/post/" + fileName);
@@ -76,7 +75,6 @@ public class PostServiceImpl implements PostService {
                 String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
 
                 String fullPath = fileDir + fileName;
-                log.info(fullPath);
                 updatedPost.getPicture().transferTo(new File(fullPath));
 
                 updatedPost.setPicturePath("/img/post/" + fileName);
@@ -84,7 +82,6 @@ public class PostServiceImpl implements PostService {
                 //기존의 이미지 경로를 유지
                 updatedPost.setPicturePath(existingPost.getPicturePath());
             }
-            log.info(existingPost.getTitle(), existingPost.getContent(), existingPost.getPicturePath());
 
             existingPost.setTitle(updatedPost.getTitle());
             existingPost.setContent(updatedPost.getContent());

@@ -38,7 +38,7 @@
 
             <div class="row">
                 <div th:if="${post.member.id == loggedInMemberId}" style="margin-top: 50px;">
-                    <a th:href="@{'/posts/update/' + ${post.id}}" class="btn btn-secondary">수정</a>
+                    <a th:href="@{/posts/update/{postId}(postId=${post.id})}" class="btn btn-secondary">수정</a>
                     <form th:action="@{'/posts/delete/' + ${post.id}}" method="post" style="display: inline;">
                         <button type="submit" class="btn btn-danger">삭제</button>
                     </form>
@@ -50,6 +50,14 @@
             </div>
 
             <hr style="border: 0.5px solid lightgray; margin-top: 50px;">
+
+            <!-- 좋아요 버튼 -->
+            <div class="d-flex align-items-center" style="margin-top: 20px;">
+                <form th:action="@{/post/like/{postId}(postId=${post.id})}" method="post">
+                    <button type="submit" class="btn btn-primary">좋아요</button>
+                </form>
+                <span class="like-count" style="margin-left: 10px;" th:text="${post.likeCount}">0</span>
+            </div>
 
             <!-- 댓글 작성 폼 -->
             <div th:if="${loggedInMemberId != null}" class="comment-form" style="margin-top: 50px;">

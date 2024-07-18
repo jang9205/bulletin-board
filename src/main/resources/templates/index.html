@@ -17,7 +17,7 @@
             <table class="table table-striped" style="table-layout: fixed">
                 <thead>
                 <tr>
-                    <th width="10%">번호</th>
+                    <th width="10%">추천수</th>
                     <th width="10%">카테고리</th>
                     <th width="44%">제목</th>
                     <th width="21%">작성자</th>
@@ -26,8 +26,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="post : ${posts}">
-                    <td th:onClick="|location.href='@{/posts/{postId}(postId=${post.id})}'|" style="cursor:pointer;"
-                        th:text="${post.id}"></td>
+                    <td th:text="${post.likeCount}"></td>
                     <td th:text="${post.category.category}"></td>
                     <td th:onClick="|location.href='@{/posts/{postId}(postId=${post.id})}'|" style="cursor:pointer;">
                         <span th:if="${post.picturePath != null}">

@@ -25,6 +25,7 @@ public class Post {
     private String picturePath;
     private MultipartFile picture;
     private List<Comment> comments;
+    private int likeCount;
 
     //생성 메서드
     public static Post createPost(Member member, PostDto postDto, Category category) {
