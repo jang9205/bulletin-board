@@ -106,6 +106,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<Post> findPostByMember(Long memberId) {
+        return postRepository.findByMember(memberId);
+    }
+
+    @Override
     public List<Post> findAllPosts(PostSearchCond postSearch) {
         return postRepository.findAll(postSearch);
     }

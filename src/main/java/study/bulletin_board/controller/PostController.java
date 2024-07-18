@@ -212,6 +212,33 @@ public class PostController {
             return "redirect:/login";
         }
     }
+
+    @GetMapping("/posts/list")
+    public String postLis(@AuthenticationPrincipal OAuth2User oAuth2User, Model model, RedirectAttributes redirectAttributes) {
+        if (oAuth2User != null) {
+            Map<String, Object> attributes = oAuth2User.getAttributes();
+            String email = (String) attributes.get("email");
+
+            if (email != null) {
+                Member member = memberRepository.findByEmail(email).orElse(null);
+
+                if (member != null) {
+                    List<Post> posts = postService.findPostByMember(member.getId());
+                    model.addAttribute("posts", posts);
+                    return "posts/postList";
+                } else {
+                    redirectAttributes.addFlashAttribute("error", "사용자를 찾을 수 없습니다.");
+                    return "redirect:/";
+                }
+            } else {
+                redirectAttributes.addFlashAttribute("error", "이메일 정보를 찾을 수 없습니다.");
+                return "redirect:/";
+            }
+        } else {
+            redirectAttributes.addFlashAttribute("error", "로그인 정보가 없습니다.");
+            return "redirect:/login";
+        }
+    }
 }
 
 

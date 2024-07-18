@@ -19,5 +19,7 @@ public interface PostMapper {
 
     Optional<Post> findById(Long id);
 
+    List<Post> findByMember(Long memberId);
+
     List<Post> findAll(PostSearchCond postSearch);
 }

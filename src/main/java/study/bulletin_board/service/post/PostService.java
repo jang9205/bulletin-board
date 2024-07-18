@@ -18,5 +18,7 @@ public interface PostService {
 
     Optional<Post> findPostById(Long id);
 
+    List<Post> findPostByMember(Long memberId);
+
     List<Post> findAllPosts(PostSearchCond postSearch);
 }

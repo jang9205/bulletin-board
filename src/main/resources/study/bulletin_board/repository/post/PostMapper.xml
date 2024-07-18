@@ -34,6 +34,21 @@
         where p.post_id = #{id}
     </select>
 
+    <select id="findByMember" resultMap="postResultMap">
+        select p.post_id as postId, p.title as title, p.content as content, p.post_date as postDate, p.picture as picturePath,
+        p.member_id as postMemberId, m.nickname as postNickname,
+        p.category_id as categoryId, c.category as category,
+        cm.comment_id as commentId, cm.content as commentContent, cm.comment_date as commentDate, cm.member_id as commentMemberId,
+        cm_member.nickname as commentNickname,
+        (select count(*) from post_like where post_id = p.post_id) as likeCount
+        from post p
+        join member m on p.member_id = m.member_id
+        join category c on p.category_id = c.category_id
+        left join comment cm on p.post_id = cm.post_id
+        left join member cm_member on cm.member_id = cm_member.member_id
+        where p.member_id = #{memberId}
+    </select>
+
     <select id="findAll" resultMap="postResultMap">
         select p.post_id as postId, p.title as title, p.content as content, p.post_date as postDate, p.picture as picturePath,
         p.member_id as postMemberId, m.nickname as postNickname,

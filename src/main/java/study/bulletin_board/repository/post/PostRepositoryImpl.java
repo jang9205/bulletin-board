@@ -36,6 +36,11 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
+    public List<Post> findByMember(Long memberId) {
+        return postMapper.findByMember(memberId);
+    }
+
+    @Override
     public List<Post> findAll(PostSearchCond postSearch) {
         return postMapper.findAll(postSearch);
     }

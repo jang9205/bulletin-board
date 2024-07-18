@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header(~{::title},~{::section})}">
+    <title>푸하핫</title>
+</head>
+
+<body>
+<div class="container">
+    <div class="row" style="margin-top: 80px;">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
+            <h2>작성한 게시물</h2>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-lg-10 justify-content-center" style="margin: 0 auto;">
+            <table class="table table-striped" style="table-layout: fixed">
+                <thead>
+                <tr>
+                    <th width="10%">추천수</th>
+                    <th width="10%">카테고리</th>
+                    <th width="44%">제목</th>
+                    <th width="21%">작성자</th>
+                    <th width="15%">작성일</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="post : ${posts}">
+                    <td th:text="${post.likeCount}"></td>
+                    <td th:text="${post.category.category}"></td>
+                    <td th:onClick="|location.href='@{/posts/{postId}(postId=${post.id})}'|" style="cursor:pointer;">
+                        <span th:if="${post.picturePath != null}">
+                            <img src="/img/photo_icon.png" alt="사진 아이콘" style="width: 17px; height: 17px; margin-left: 3px;">
+                        </span>
+                        <span th:text="${post.title}"></span>
+                        <span th:if="${post.comments != null and #lists.size(post.comments) > 0}"
+                              th:text="| [${#lists.size(post.comments)}] |"></span>
+                    </td>
+                    <td th:text="${post.member.nickname}"></td>
+                    <td th:text="${post.getRelativePostDate()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer Section Begin -->
+<div class="row" style="margin-bottom: 80px;"></div>
+<footer th:replace="~{fragments/footer::footer}"></footer>
+</body>
+
+<script src="/js/bootstrap.min.js"></script>
+
+</html>

@@ -4,11 +4,13 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 import study.bulletin_board.domain.Member;
 import study.bulletin_board.domain.MemberGrade;
 import study.bulletin_board.dto.MemberSaveDto;
 import study.bulletin_board.repository.member.MemberRepository;
+import study.bulletin_board.service.post.PostService;
 
 import java.util.Optional;
 
@@ -20,6 +22,9 @@ public class MemberRepositoryTest {
 
     @Autowired
     MemberRepository memberRepository;
+
+    @MockBean
+    PostService postService;
 
     @Test
     void saveMember() {

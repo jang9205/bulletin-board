@@ -7,6 +7,8 @@ import java.util.Optional;
 
 public interface CategoryRepository {
 
+    void save(Category category);
+
     List<String> findAll();
 
     Optional<Category> findCategory(String category);

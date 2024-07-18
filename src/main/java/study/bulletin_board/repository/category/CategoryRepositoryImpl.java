@@ -14,6 +14,11 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     private final CategoryMapper categoryMapper;
 
     @Override
+    public void save(Category category) {
+        categoryMapper.save(category);
+    }
+
+    @Override
     public List<String> findAll() {
         return categoryMapper.findAll();
     }

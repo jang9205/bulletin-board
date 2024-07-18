@@ -22,7 +22,8 @@
                         </div>
                     </form>
                     <div class="text-center" style="margin-top: 20px;">
-                        <form th:action="@{/logout}" method="post">
+                        <a th:href="@{/posts/list}" class="btn btn-secondary" style="margin-right: 10px;">작성한 게시글</a>
+                        <form th:action="@{/logout}" method="post" style="display:inline;">
                             <button type="submit" class="btn btn-danger">로그아웃</button>
                         </form>
                     </div>

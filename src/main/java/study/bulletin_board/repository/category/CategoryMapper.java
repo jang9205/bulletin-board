@@ -9,6 +9,8 @@ import java.util.Optional;
 @Mapper
 public interface CategoryMapper {
 
+    void save(Category category);
+
     List<String> findAll();
 
     Optional<Category> findCategory(String category);
