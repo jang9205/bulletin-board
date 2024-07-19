@@ -2,6 +2,7 @@ package study.bulletin_board.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class CommentController {
 
     private final CommentService commentService;
@@ -41,6 +43,8 @@ public class CommentController {
                     commentService.saveComment(member.getId(), postId, content);
                     redirectAttributes.addAttribute("postId", postId);
                     redirectAttributes.addFlashAttribute("successMessage", "댓글이 등록되었습니다.");
+                    log.info("New Comment- content : {}, member ID : {}, post ID : {}",
+                            content, member.getId(), postId);
                     return "redirect:/posts/{postId}";
                 } else {
                     redirectAttributes.addFlashAttribute("error", "사용자를 찾을 수 없습니다.");

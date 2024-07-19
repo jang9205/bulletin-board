@@ -156,6 +156,27 @@ public class PostRepositoryTest {
         assertThat(result2).hasSize(1);
     }
 
+    @Test
+    void deletePost() {
+        // given
+        byte[] fileBytes = "Test file content".getBytes();
+        MultipartFile multipartFile = new MockMultipartFile("testFile", "test.txt", "text/plain", fileBytes);
+
+        MemberSaveDto saveDto = new MemberSaveDto("kim", "ab1234@naver.com");
+        Member member = memberRepository.save(Member.saveMember(saveDto));
+        Category category = Category.createCategory("유머");
+        categoryRepository.save(category);
+
+        PostDto postDto = new PostDto("안녕하세요", "aaa", "유머", "/img/aaa.jpg", multipartFile);
+        Post post = postRepository.save(Post.createPost(member, postDto, category));
+
+        // when
+        postRepository.delete(post.getId());
+
+        // then
+        assertThat(postRepository.findById(post.getId()).isEmpty()).isTrue();
+    }
+
     void postSearch(String memberName, String postTitle, Post... posts) {
         PostSearchCond postSearch = new PostSearchCond(memberName, postTitle);
         List<Post> result = postRepository.findAll(postSearch, 10, 0);

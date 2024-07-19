@@ -86,9 +86,11 @@ public class PostController {
     }
 
     @PostMapping("/write/new")
-    public String savePost(@Valid @ModelAttribute("postDto") PostDto postDto, BindingResult result,
+    public String savePost(@Valid @ModelAttribute("postDto") PostDto postDto, BindingResult result, Model model,
                            RedirectAttributes redirectAttributes, @AuthenticationPrincipal OAuth2User oAuth2User) {
         if (result.hasErrors()) {
+            List<String> categories = categoryService.findAllCategories();
+            model.addAttribute("categories", categories);
             return "posts/saveForm";
         }
         if (oAuth2User != null) {
@@ -102,6 +104,8 @@ public class PostController {
                     Post post = postService.savePost(member.getId(), postDto);
                     redirectAttributes.addAttribute("postId", post.getId());
                     redirectAttributes.addFlashAttribute("successMessage", "게시물이 등록되었습니다.");
+                    log.info("New post- title: {}, content: {}, by member ID: {}",
+                            post.getTitle(), post.getContent(), post.getMember().getId());
                     return "redirect:/posts/{postId}";
                 } else {
                     redirectAttributes.addFlashAttribute("error", "사용자를 찾을 수 없습니다.");
@@ -171,6 +175,8 @@ public class PostController {
                         postService.updatePost(findPost.getId(), member.getId(), post);
                         redirectAttributes.addAttribute("postId", findPost.getId());
                         redirectAttributes.addFlashAttribute("successMessage", "게시물이 수정되었습니다.");
+                        log.info("Post updated- new title: {}, new content: {}, by member ID: {}",
+                                post.getTitle(), post.getContent(), post.getMember().getId());
                         return "redirect:/posts/{postId}";
                     } else {
                         redirectAttributes.addFlashAttribute("error", "게시물 수정 권한이 없습니다.");
