@@ -158,7 +158,7 @@ public class PostRepositoryTest {
 
     void postSearch(String memberName, String postTitle, Post... posts) {
         PostSearchCond postSearch = new PostSearchCond(memberName, postTitle);
-        List<Post> result = postRepository.findAll(postSearch);
+        List<Post> result = postRepository.findAll(postSearch, 10, 0);
         assertThat(result).hasSize(posts.length);
     }
 }

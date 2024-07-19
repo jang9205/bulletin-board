@@ -47,6 +47,7 @@
         left join comment cm on p.post_id = cm.post_id
         left join member cm_member on cm.member_id = cm_member.member_id
         where p.member_id = #{memberId}
+        order by p.post_id desc
     </select>
 
     <select id="findAll" resultMap="postResultMap">
@@ -60,14 +61,29 @@
         join category c on p.category_id = c.category_id
         left join comment cm on p.post_id = cm.post_id
         <where>
-            <if test="memberName != null and memberName != ''">
-                and m.nickname like concat('%', #{memberName}, '%')
+            <if test="postSearch.memberName != null and postSearch.memberName != ''">
+                and m.nickname like concat('%', #{postSearch.memberName}, '%')
             </if>
-            <if test="postTitle != null and postTitle != ''">
-                and p.title like concat('%', #{postTitle}, '%')
+            <if test="postSearch.postTitle != null and postSearch.postTitle != ''">
+                and p.title like concat('%', #{postSearch.postTitle}, '%')
             </if>
         </where>
         order by p.post_id desc
+        limit #{pageSize} offset #{offset}
+    </select>
+
+    <select id="countAll" resultType="int">
+        select count(*)
+        from post p
+        join member m on p.member_id = m.member_id
+        <where>
+            <if test="postSearch.memberName != null and postSearch.memberName != ''">
+                and m.nickname like concat('%', #{postSearch.memberName}, '%')
+            </if>
+            <if test="postSearch.postTitle != null and postSearch.postTitle != ''">
+                and p.title like concat('%', #{postSearch.postTitle}, '%')
+            </if>
+        </where>
     </select>
 
     <resultMap id="postResultMap" type="study.bulletin_board.domain.Post">

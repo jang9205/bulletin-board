@@ -21,5 +21,7 @@ public interface PostMapper {
 
     List<Post> findByMember(Long memberId);
 
-    List<Post> findAll(PostSearchCond postSearch);
+    List<Post> findAll(@Param("postSearch") PostSearchCond postSearch, @Param("pageSize") int pageSize, @Param("offset") int offset);
+
+    int countAll(@Param("postSearch") PostSearchCond postSearch);
 }

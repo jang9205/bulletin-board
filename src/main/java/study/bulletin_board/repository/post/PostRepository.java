@@ -18,5 +18,7 @@ public interface PostRepository {
 
     List<Post> findByMember(Long memberId);
 
-    List<Post> findAll(PostSearchCond postSearch);
+    List<Post> findAll(PostSearchCond postSearch, int pageSize, int offset);
+
+    int countAll(PostSearchCond postSearch);
 }

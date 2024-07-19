@@ -20,5 +20,7 @@ public interface PostService {
 
     List<Post> findPostByMember(Long memberId);
 
-    List<Post> findAllPosts(PostSearchCond postSearch);
+    List<Post> findAllPosts(PostSearchCond postSearch, int pageSize, int offset);
+
+    int countAllPosts(PostSearchCond postSearch);
 }

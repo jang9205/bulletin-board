@@ -41,7 +41,12 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public List<Post> findAll(PostSearchCond postSearch) {
-        return postMapper.findAll(postSearch);
+    public List<Post> findAll(PostSearchCond postSearch, int pageSize, int offset) {
+        return postMapper.findAll(postSearch, pageSize, offset);
+    }
+
+    @Override
+    public int countAll(PostSearchCond postSearch) {
+        return postMapper.countAll(postSearch);
     }
 }

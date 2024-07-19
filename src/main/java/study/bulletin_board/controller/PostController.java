@@ -35,14 +35,24 @@ public class PostController {
     @GetMapping("/")
     public String index(@RequestParam(value = "searchType", required = false) String searchType,
                         @RequestParam(value = "keyword", required = false) String keyword,
+                        @RequestParam(value = "page", defaultValue = "1") int page,
                         @ModelAttribute("postSearch") PostSearchCond postSearch, Model model) {
         if ("memberName".equals(searchType)) {
             postSearch.setMemberName(keyword);
         } else if ("postTitle".equals(searchType)) {
             postSearch.setPostTitle(keyword);
         }
-        List<Post> posts = postService.findAllPosts(postSearch);
+
+        int pageSize = 20;
+        int offset = (page - 1) * pageSize;
+
+        List<Post> posts = postService.findAllPosts(postSearch, pageSize, offset);
+        int totalPosts = postService.countAllPosts(postSearch);
+        int totalPages = (int) Math.ceil((double) totalPosts / pageSize);
+
         model.addAttribute("posts", posts);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
         return "index";
     }
 

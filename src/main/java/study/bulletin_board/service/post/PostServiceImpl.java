@@ -111,7 +111,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> findAllPosts(PostSearchCond postSearch) {
-        return postRepository.findAll(postSearch);
+    public List<Post> findAllPosts(PostSearchCond postSearch, int pageSize, int offset) {
+        return postRepository.findAll(postSearch, pageSize, offset);
+    }
+
+    @Override
+    public int countAllPosts(PostSearchCond postSearch) {
+        return postRepository.countAll(postSearch);
     }
 }
